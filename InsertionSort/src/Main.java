@@ -12,6 +12,7 @@ public class Main {
 		Insert insert = new Insert();
 		insert.sort();
 		
+		//print entered list so user knows what they've entered 
 		insert.printUnSorted();
 		
 		while (runAgain) {

@@ -19,7 +19,6 @@ public class Insert {
 	
 	//set up list
 	private void initialList() {
-		boolean userStop=false;
 		int index=0, num;
 		String numEnter1, numEnter, numSub;
 		int digitCount=0, firstIndex=0;
@@ -27,58 +26,59 @@ public class Insert {
 		//EXTRA CREDIT- input list as a string
 		System.out.println("Please enter a list of integers, no more than 25."
 				+ "\nPlease enter in this format #,#,# with no spaces around commas.");
-		
 			
 				System.out.println("Enter string here: ");
 				numEnter1 = scn.nextLine();
 				numEnter = numEnter1 + ",";
 				
 				for (int i=0; i<numEnter.length(); i++) {
-					try {
-						//need to make negatives be possible
-						if (numEnter.charAt(i) == '1' || numEnter.charAt(i) == '2' || numEnter.charAt(i) == '3' 
-								|| numEnter.charAt(i) == '4' || numEnter.charAt(i) == '5' || numEnter.charAt(i) == '6' 
-								|| numEnter.charAt(i) == '7' || numEnter.charAt(i) == '8' || numEnter.charAt(i) == '9' 
-								|| numEnter.charAt(i) == '0' || numEnter.charAt(i) == '-') {
-								
-								if (digitCount==0) {
-									firstIndex=i;
+					if (index <= 25) {
+					
+						try {
+							//need to make negatives be possible
+							if (numEnter.charAt(i) == '1' || numEnter.charAt(i) == '2' || numEnter.charAt(i) == '3' 
+									|| numEnter.charAt(i) == '4' || numEnter.charAt(i) == '5' || numEnter.charAt(i) == '6' 
+									|| numEnter.charAt(i) == '7' || numEnter.charAt(i) == '8' || numEnter.charAt(i) == '9' 
+									|| numEnter.charAt(i) == '0' || numEnter.charAt(i) == '-') {
+									
+									if (digitCount==0) {
+										firstIndex=i;
+									}
+									
+									digitCount++;
 								}
-//								
-								digitCount++;
+						
+								if (numEnter.charAt(i)==',') {
+									if (numEnter.charAt(i-1)=='-') {
+										numSub = numEnter.substring(firstIndex, i);
+										num = Integer.valueOf(numSub);
+										num = num*-1;
+										unSortedList[index] = num;
+										index++;
+									}else {
+										numSub = numEnter.substring(firstIndex, i);
+										num = Integer.valueOf(numSub);
+										unSortedList[index] = num;
+										index++;
+									}
+								digitCount=0;
+								firstIndex=0;
 							}
-							//TODO: try neg
-							if (numEnter.charAt(i)==',') {
-								if (numEnter.charAt(i-1)=='-') {
-									numSub = numEnter.substring(firstIndex, i);
-									num = Integer.valueOf(numSub);
-									num = num*-1;
-									unSortedList[index] = num;
-									index++;
-								}else {
-									numSub = numEnter.substring(firstIndex, i);
-									num = Integer.valueOf(numSub);
-									unSortedList[index] = num;
-									index++;
-								}
-							digitCount=0;
-							firstIndex=0;
+							
+							
+							
+						}catch (IndexOutOfBoundsException e) {
+							numSub = numEnter.substring(firstIndex,i-1);
+							num = Integer.valueOf(numSub);
+							unSortedList[index] = num;
+							index++;
+							
+						}catch (java.lang.NumberFormatException e) {
+							System.out.println("Please only enter in the specified format.");
 						}
-						
-						
-						
-					}catch (IndexOutOfBoundsException e) {
-						numSub = numEnter.substring(firstIndex,i-1);
-						num = Integer.valueOf(numSub);
-						unSortedList[index] = num;
-						index++;
-						
-					}catch (java.lang.NumberFormatException e) {
-						System.out.println("Please only enter in the specified format.");
 					}
-				}
 				
-
+				}
 
 		size = index;
 	}
@@ -114,10 +114,10 @@ public class Insert {
 		int num;
 		String runAgain;
 		
-		if (size<=25) {
+		if (size<25) {
 			
 			try {
-				while (!userStop && size<=25) {
+				while (!userStop && size<25) {
 					System.out.println("Please enter a number.");
 					num=scn.nextInt();
 					unSortedList[size] = num;
@@ -194,6 +194,7 @@ public class Insert {
 		int [] countArr = new int [size];
 		System.out.print("Mode: ");
 		
+		//add number of occurrences of each number to parallel array countArr
 		for (int i=0; i<size; i++) {
 			
 			current = sortedList[i];
@@ -208,6 +209,7 @@ public class Insert {
 			countArr[i] = count;
 		}
 		
+		//figure out what the largest number in countArr is 
 		most = 1;
 		for (int i=0; i<size; i++) {
 			if (countArr[i] > most) {
@@ -215,13 +217,14 @@ public class Insert {
 			}
 		}
 		
+		//print numbers that have the most as their number in countArr
 		if (most!=1) {
 			for (int i=0; i<size; i++) {
 				if (countArr[i] == most) {
-					System.out.println(sortedList[i] + " ");
+					System.out.print(sortedList[i] + " ");
 					currentNum = sortedList[i];
 					
-					for (int j=0; j<size; j++) {
+					for (int j=i; j<size; j++) {
 						if (sortedList[j] == currentNum) {
 							i++;
 						}
@@ -229,8 +232,9 @@ public class Insert {
 				}
 			}//end of for
 		}else {
-			System.out.println("There is no mode.");
+			System.out.print("There is no mode.");
 		}
+		System.out.println();
 	}
 	
 	
